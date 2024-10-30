@@ -9,7 +9,9 @@ class User(
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id: Long? = null,
         var username: String = "",
-        var password: String = ""
+        var password: String = "",
+        var firstName: String = "",
+        var lastName: String = "",
 ){
         override fun toString(): String {
                 return "User(id=$id, username='$username', password='$password')"
