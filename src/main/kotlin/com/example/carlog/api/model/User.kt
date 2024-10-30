@@ -10,4 +10,8 @@ class User(
         var id: Long? = null,
         var username: String = "",
         var password: String = ""
-)
+){
+        override fun toString(): String {
+                return "User(id=$id, username='$username', password='$password')"
+        }
+}
