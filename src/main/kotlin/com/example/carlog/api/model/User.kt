@@ -1,5 +1,6 @@
 package com.example.carlog.api.model
 
+import com.example.carlog.api.dto.Role
 import jakarta.persistence.*
 
 @Entity
@@ -7,13 +8,17 @@ import jakarta.persistence.*
 class User(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Long? = null,
-        var username: String = "",
+        val id: Long? = null,
+        val login: String = "",
         var password: String = "",
-        var firstName: String = "",
-        var lastName: String = "",
-){
-        override fun toString(): String {
-                return "User(id=$id, username='$username', password='$password')"
-        }
+        val firstName: String = "",
+        val lastName: String = "",
+        val address: String = "",
+        val email: String = "",
+        val phoneNumber: String = "",
+        @Column(name = "workshop_name")
+        val workshopName: String? = null,
+        @Enumerated(EnumType.STRING)
+        val role: Role = Role.CLIENT
+) {
 }

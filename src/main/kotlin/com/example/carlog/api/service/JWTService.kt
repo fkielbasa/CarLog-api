@@ -14,7 +14,6 @@ import java.security.Key
 import java.util.*
 import kotlin.collections.HashMap
 import kotlin.reflect.KFunction1
-
 @Service
 class JWTService(
         private val userRepository: UserRepository,
@@ -23,13 +22,14 @@ class JWTService(
 ) {
     private val claims: HashMap<String, Any> = HashMap()
     fun generateToken(user: User): String {
-        val foundUser: User = userRepository.findByUsername(user.username) ?: throw UsernameNotFoundException("User not found")
+        val foundUser: User = userRepository.findUserByLogin(user.login) ?: throw UsernameNotFoundException("User not found")
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(foundUser.username)
+                .setSubject(foundUser.login)
                 .claim("id",foundUser.id)
-                .claim("username",foundUser.username)
+                .claim("login",foundUser.login)
                 .claim("Name", foundUser.firstName + " " + foundUser.lastName)
+                .claim("Role", foundUser.role)
                 .setIssuedAt(Date(System.currentTimeMillis()))
                 .setExpiration(Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(getKey())
