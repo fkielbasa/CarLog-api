@@ -17,6 +17,6 @@ class MyUserDetails(
     }
 
     override fun getUsername(): String {
-        return user.username
+        return user.login
     }
 }
