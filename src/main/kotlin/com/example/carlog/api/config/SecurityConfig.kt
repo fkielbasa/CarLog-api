@@ -27,10 +27,11 @@ class SecurityConfig(
                 .csrf().disable()
                 .authorizeHttpRequests{request ->
                     request
-                            .requestMatchers("/api/v1/auth/*")
+                            .requestMatchers("/api/v1/auth/**")
                             .permitAll()
                             .anyRequest().authenticated()
                 }
+                .cors(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
         return http.build()

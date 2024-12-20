@@ -24,6 +24,7 @@ class AuthController(
     fun authenticate(
             @RequestBody user: AuthRequest)
     : String {
+        System.out.println("work")
         return authService.authenticate(user)
     }
 }
