@@ -19,6 +19,8 @@ class User(
         @Column(name = "workshop_name")
         val workshopName: String? = null,
         @Enumerated(EnumType.STRING)
-        val role: Role = Role.CLIENT
+        val role: Role = Role.CLIENT,
+        @OneToMany(mappedBy = "user")
+        val vehicles: List<Vehicle>? = mutableListOf()
 ) {
 }
