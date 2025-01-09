@@ -1,5 +1,6 @@
 package com.example.carlog.api.security
 
+import com.example.carlog.api.dto.TokenResponse
 import com.example.carlog.api.model.User
 import com.example.carlog.api.repository.UserRepository
 import com.example.carlog.api.service.JWTService
@@ -16,7 +17,7 @@ class AuthService(
         private val authenticationManager: AuthenticationManager
 ) {
 
-    fun register(reguest: ReqisterRequest): String {
+    fun register(reguest: ReqisterRequest): TokenResponse {
 //        if (userRepository.findByUsername(authRequest.login)) {
 //            throw IllegalArgumentException("User with this login already exists.")
 //        }
@@ -32,16 +33,19 @@ class AuthService(
         )
         userRepository.save(user)
 
-        return jwtService.generateToken(user)
+        return TokenResponse(jwtService.generateToken(user))
     }
 
-    fun authenticate(user: AuthRequest): String {
+    fun authenticate(user: AuthRequest): TokenResponse {
         authenticationManager.authenticate(
                 UsernamePasswordAuthenticationToken(user.login, user.password)
         ).isAuthenticated
         val authenticatedUser = userRepository.findUserByLogin(user.login)
         return authenticatedUser?.let {
-            jwtService.generateToken(it)
+            TokenResponse(jwtService.generateToken(it))
         } ?: throw IllegalArgumentException("User not found")
+    }
+    fun isUserExists(login: String, email: String): Boolean {
+        return userRepository.existsByLoginOrEmail(login, email);
     }
 }
