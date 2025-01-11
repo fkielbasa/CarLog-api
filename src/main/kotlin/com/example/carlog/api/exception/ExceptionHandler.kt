@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 @RestControllerAdvice
 class ExceptionHandler {
 
-    @ExceptionHandler(VehicleNotFoundException::class)
+    @ExceptionHandler(VehicleNotFoundException::class, UserNotFoundException::class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    fun handleVehicleNotFoundException(ex: VehicleNotFoundException) {
+    fun handleVehicleNotFoundException() {
     }
 }

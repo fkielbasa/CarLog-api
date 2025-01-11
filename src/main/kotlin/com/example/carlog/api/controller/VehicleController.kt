@@ -1,5 +1,6 @@
 package com.example.carlog.api.controller
 
+import com.example.carlog.api.dto.VehicleRequest
 import com.example.carlog.api.dto.VehicleResponse
 import com.example.carlog.api.model.Vehicle
 import com.example.carlog.api.service.VehicleService
@@ -24,7 +25,7 @@ class VehicleController( private val vehicleService: VehicleService) {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun addVehicle(@RequestBody vehicle: Vehicle): Vehicle {
+    fun addVehicle(@RequestBody vehicle: VehicleRequest): Vehicle {
         return vehicleService.addVehicle(vehicle)
     }
 
