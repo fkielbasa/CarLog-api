@@ -23,9 +23,23 @@ class VehicleService( private val vehicleRepository: VehicleRepository) {
                     vehicle.services)  }
     }
 
-    fun getVehicleById(id: Long): Vehicle {
-        return vehicleRepository.findById(id).orElseThrow {
-            throw VehicleNotFoundException("Vehicle with id $id not found")
+    fun getVehiclesByUserId(userId: Long): List<VehicleResponse> {
+        val vehicles = vehicleRepository.findAllByUserId(userId)
+        if (vehicles.isEmpty()) {
+            throw VehicleNotFoundException("No vehicles found for user with id $userId")
+        }
+        return vehicles.map { vehicle ->
+            VehicleResponse(
+                    vehicle.id,
+                    vehicle.user.id,
+                    vehicle.brand,
+                    vehicle.model,
+                    vehicle.year,
+                    vehicle.vin,
+                    vehicle.horsepower,
+                    vehicle.torque,
+                    vehicle.services
+            )
         }
     }
 
