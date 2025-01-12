@@ -25,13 +25,13 @@ class VehicleController( private val vehicleService: VehicleService) {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun addVehicle(@RequestBody vehicle: VehicleRequest): Vehicle {
+    fun addVehicle(@RequestBody vehicle: VehicleRequest): VehicleResponse {
         return vehicleService.addVehicle(vehicle)
     }
 
     @PutMapping("/{id}")
-    fun updateVehicle(@PathVariable id: Long, @RequestBody vehicle: Vehicle): Vehicle {
+    @ResponseStatus(HttpStatus.OK)
+    fun updateVehicle(@PathVariable id: Long, @RequestBody vehicle: VehicleRequest): VehicleResponse {
         return vehicleService.updateVehicle(id, vehicle)
     }
-
 }
