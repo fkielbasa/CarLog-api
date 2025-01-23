@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("api/v1/users")
 class UserController(
         private val userRepository: UserRepository
 ) {
-    @GetMapping("/users")
+    @GetMapping()
     fun getAllUsers(): List<User> {
         return userRepository.findAll()
     }
