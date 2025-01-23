@@ -19,7 +19,7 @@ class VehicleController( private val vehicleService: VehicleService) {
 
     @GetMapping("/user/{id}")
     @ResponseStatus(HttpStatus.OK)
-    fun getVehicleById(@PathVariable id: Long): List<VehicleResponse> {
+    fun getVehicleByUserId(@PathVariable id: Long): List<VehicleResponse> {
         return vehicleService.getVehiclesByUserId(id);
     }
 
@@ -33,5 +33,20 @@ class VehicleController( private val vehicleService: VehicleService) {
     @ResponseStatus(HttpStatus.OK)
     fun updateVehicle(@PathVariable id: Long, @RequestBody vehicle: VehicleRequest): VehicleResponse {
         return vehicleService.updateVehicle(id, vehicle)
+    }
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    fun deleteVehicle(@PathVariable id: Long) {
+        return vehicleService.deleteVehicle(id)
+    }
+//    @GetMapping("/{vin}")
+//    @ResponseStatus(HttpStatus.OK)
+//    fun findVehicleByVinNumber(@PathVariable vin: String): VehicleResponse {
+//        return vehicleService.findVehicleByVin(vin);
+//    }
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    fun getVehicleById(@PathVariable id: Long): VehicleResponse {
+        return vehicleService.getVehicleById(id);
     }
 }

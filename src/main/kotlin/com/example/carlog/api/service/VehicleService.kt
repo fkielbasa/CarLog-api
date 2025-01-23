@@ -9,6 +9,8 @@ import com.example.carlog.api.model.Vehicle
 import com.example.carlog.api.repository.UserRepository
 import com.example.carlog.api.repository.VehicleRepository
 import org.springframework.stereotype.Service
+import java.util.*
+
 
 @Service
 class VehicleService( private val vehicleRepository: VehicleRepository, private val userRepository: UserRepository) {
@@ -27,6 +29,12 @@ class VehicleService( private val vehicleRepository: VehicleRepository, private 
             VehicleMapper.mapToVehicleResponse(vehicle)
         }
     }
+    fun getVehicleById(id: Long): VehicleResponse {
+        val vehicle = vehicleRepository.findById(id).orElseThrow {
+            VehicleNotFoundException("No vehicles found with id $id")
+        }
+        return VehicleMapper.mapToVehicleResponse(vehicle)
+    }
 
     fun addVehicle(vehicle: VehicleRequest): VehicleResponse {
         val userId = vehicle.userId ?: throw IllegalArgumentException("User ID cannot be null");
@@ -38,6 +46,7 @@ class VehicleService( private val vehicleRepository: VehicleRepository, private 
                 vin = vehicle.vin,
                 horsepower = vehicle.horsepower,
                 torque = vehicle.torque,
+                mileage = vehicle.mileage,
                 user = userRepository.findById(userId)
                         .orElseThrow { throw UserNotFoundException("User with id $userId not found") }
         )
@@ -56,6 +65,7 @@ class VehicleService( private val vehicleRepository: VehicleRepository, private 
         vehicleRequest.vin?.let { existingVehicle.vin = it }
         vehicleRequest.horsepower?.let { existingVehicle.horsepower = it }
         vehicleRequest.torque?.let { existingVehicle.torque = it }
+        vehicleRequest.mileage?.let { existingVehicle.mileage = it }
 
         vehicleRepository.save(existingVehicle)
 
@@ -67,5 +77,9 @@ class VehicleService( private val vehicleRepository: VehicleRepository, private 
             throw VehicleNotFoundException("Vehicle with id $id not found")
         }
         vehicleRepository.deleteById(id)
+    }
+    fun findVehicleByVin(vin: String): VehicleResponse {
+        val vehicle = vehicleRepository.findVehicleByVin(vin);
+        return VehicleMapper.mapToVehicleResponse(vehicle);
     }
 }
