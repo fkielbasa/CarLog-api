@@ -22,5 +22,4 @@ class User(
         val role: Role = Role.CLIENT,
         @OneToMany(mappedBy = "user")
         val vehicles: List<Vehicle>? = mutableListOf()
-) {
-}
+)
