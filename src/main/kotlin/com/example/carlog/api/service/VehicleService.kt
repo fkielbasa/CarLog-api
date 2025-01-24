@@ -1,15 +1,13 @@
 package com.example.carlog.api.service
 
-import com.example.carlog.api.dto.VehicleMapper
+import com.example.carlog.api.dto.mapper.VehicleMapper
 import com.example.carlog.api.dto.VehicleRequest
 import com.example.carlog.api.dto.VehicleResponse
-import com.example.carlog.api.exception.UserNotFoundException
-import com.example.carlog.api.exception.VehicleNotFoundException
+import com.example.carlog.api.exception.NotFoundException
 import com.example.carlog.api.model.Vehicle
 import com.example.carlog.api.repository.UserRepository
 import com.example.carlog.api.repository.VehicleRepository
 import org.springframework.stereotype.Service
-import java.util.*
 
 
 @Service
@@ -23,7 +21,7 @@ class VehicleService( private val vehicleRepository: VehicleRepository, private 
     fun getVehiclesByUserId(userId: Long): List<VehicleResponse> {
         val vehicles = vehicleRepository.findAllByUserId(userId)
         if (vehicles.isEmpty()) {
-            throw VehicleNotFoundException("No vehicles found for user with id $userId")
+            throw NotFoundException("No vehicles found for user with id $userId")
         }
         return vehicles.map { vehicle ->
             VehicleMapper.mapToVehicleResponse(vehicle)
@@ -31,7 +29,7 @@ class VehicleService( private val vehicleRepository: VehicleRepository, private 
     }
     fun getVehicleById(id: Long): VehicleResponse {
         val vehicle = vehicleRepository.findById(id).orElseThrow {
-            VehicleNotFoundException("No vehicles found with id $id")
+            NotFoundException("No vehicles found with id $id")
         }
         return VehicleMapper.mapToVehicleResponse(vehicle)
     }
@@ -48,7 +46,7 @@ class VehicleService( private val vehicleRepository: VehicleRepository, private 
                 torque = vehicle.torque,
                 mileage = vehicle.mileage,
                 user = userRepository.findById(userId)
-                        .orElseThrow { throw UserNotFoundException("User with id $userId not found") }
+                        .orElseThrow { throw NotFoundException("User with id $userId not found") }
         )
         vehicleRepository.save(vehicle);
         return VehicleMapper.mapToVehicleResponse(vehicle);
@@ -56,7 +54,7 @@ class VehicleService( private val vehicleRepository: VehicleRepository, private 
     fun updateVehicle(id: Long, vehicleRequest: VehicleRequest): VehicleResponse {
 
         val existingVehicle = vehicleRepository.findById(id).orElseThrow {
-            VehicleNotFoundException("Vehicle with id $id not found")
+            NotFoundException("Vehicle with id $id not found")
         }
 
         vehicleRequest.brand?.let { existingVehicle.brand = it }
@@ -74,7 +72,7 @@ class VehicleService( private val vehicleRepository: VehicleRepository, private 
 
     fun deleteVehicle(id: Long) {
         if (!vehicleRepository.existsById(id)) {
-            throw VehicleNotFoundException("Vehicle with id $id not found")
+            throw NotFoundException("Vehicle with id $id not found")
         }
         vehicleRepository.deleteById(id)
     }

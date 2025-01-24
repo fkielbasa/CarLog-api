@@ -1,5 +1,6 @@
-package com.example.carlog.api.dto
+package com.example.carlog.api.dto.mapper
 
+import com.example.carlog.api.dto.VehicleResponse
 import com.example.carlog.api.model.Vehicle
 
 class VehicleMapper {
