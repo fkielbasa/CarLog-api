@@ -2,12 +2,11 @@ package com.example.carlog.api.service
 
 import com.example.carlog.api.dto.ClientResponse
 import com.example.carlog.api.dto.MechanicResponse
-import com.example.carlog.api.dto.Role
+import com.example.carlog.api.model.enums.Role
 import com.example.carlog.api.dto.mapper.UserMapper
 import com.example.carlog.api.exception.NotFoundException
 import com.example.carlog.api.repository.ServiceEntryRepository
 import com.example.carlog.api.repository.UserRepository
-import org.springframework.security.core.userdetails.User
 import org.springframework.stereotype.Service
 
 @Service

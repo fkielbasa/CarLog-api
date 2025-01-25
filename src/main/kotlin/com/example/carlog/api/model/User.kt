@@ -1,6 +1,6 @@
 package com.example.carlog.api.model
 
-import com.example.carlog.api.dto.Role
+import com.example.carlog.api.model.enums.Role
 import jakarta.persistence.*
 
 @Entity

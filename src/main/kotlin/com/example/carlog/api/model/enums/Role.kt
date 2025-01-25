@@ -1,4 +1,4 @@
-package com.example.carlog.api.dto
+package com.example.carlog.api.model.enums
 
 enum class Role {
     CLIENT,
