@@ -5,13 +5,19 @@ import com.example.carlog.api.dto.VehicleRequest
 import com.example.carlog.api.dto.VehicleResponse
 import com.example.carlog.api.exception.NotFoundException
 import com.example.carlog.api.model.Vehicle
+import com.example.carlog.api.repository.ServiceEntryRepository
 import com.example.carlog.api.repository.UserRepository
 import com.example.carlog.api.repository.VehicleRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 
 @Service
-class VehicleService( private val vehicleRepository: VehicleRepository, private val userRepository: UserRepository) {
+class VehicleService(
+        private val vehicleRepository: VehicleRepository,
+        private val userRepository: UserRepository,
+        private val serviceEntryRepository: ServiceEntryRepository
+) {
     fun getAllVehicles(): List<VehicleResponse> {
         return vehicleRepository.findAll().map { vehicle ->
             VehicleMapper.mapToVehicleResponse(vehicle)
@@ -69,11 +75,12 @@ class VehicleService( private val vehicleRepository: VehicleRepository, private 
 
         return VehicleMapper.mapToVehicleResponse(existingVehicle)
     }
-
+    @Transactional
     fun deleteVehicle(id: Long) {
         if (!vehicleRepository.existsById(id)) {
             throw NotFoundException("Vehicle with id $id not found")
         }
+        serviceEntryRepository.deleteServiceEntriesByVehicleId(id)
         vehicleRepository.deleteById(id)
     }
     fun findVehicleByVin(vin: String): VehicleResponse {

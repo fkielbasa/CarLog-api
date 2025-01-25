@@ -10,4 +10,5 @@ interface ServiceEntryRepository: JpaRepository<ServiceEntry, Long> {
     fun getServiceEntriesByVehicleId(vehicleId: Long): Optional<List<ServiceEntry>>
     @Query("SELECT s FROM ServiceEntry s WHERE s.vehicle.user.id = :userId")
     fun findAllByUserId(@Param("userId") userId: Long): List<ServiceEntry>
+    fun deleteServiceEntriesByVehicleId(id: Long)
 }
