@@ -31,6 +31,32 @@ class UserService(
         return userRepository.findById(serviceEntry.mechanicId).filter{ it.role == Role.MECHANIC }
                 .map { UserMapper.mapToMechanicResponse(it) }
                 .orElseThrow{ NotFoundException("User not found or not a mechanic")}
+    }
+    fun getUserById(id: Long): Any {
+        val user = userRepository.findById(id).orElseThrow {
+            NotFoundException("User not found")
+        }
 
+        return when (user.role) {
+            Role.MECHANIC -> {
+                MechanicResponse(
+                        firstName = user.firstName,
+                        lastName = user.lastName,
+                        email = user.email,
+                        address = user.address,
+                        phoneNumber = user.phoneNumber,
+                        workshop = user.workshopName
+                )
+            }
+            Role.CLIENT -> {
+                ClientResponse(
+                        firstName = user.firstName,
+                        lastName = user.lastName,
+                        email = user.email,
+                        phoneNumber = user.phoneNumber,
+                        address = user.address
+                )
+            }
+        }
     }
 }
