@@ -32,3 +32,4 @@ class ServiceEntry(
         @Column(nullable = false, length = 500)
         val description: String = ""
 )
+
